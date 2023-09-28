@@ -55,7 +55,6 @@ public class FileParserService {
 
     public String getOriginalUrl(String shortUrl) {
         String longUrl = shortToLongUrlMapping.get(shortUrl);
-
         if(longUrl == null){
             throw new NullPointerException("Issue while fetching long url");
         }

@@ -12,17 +12,17 @@ public class TodoController {
     @Autowired
     TodoService todoService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/add/{id}", method = RequestMethod.POST)
     public void addTodo(@PathVariable int id, @RequestBody String description){
         todoService.addTodo(id, description);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
     public String getTodo(@PathVariable int id){
         return todoService.getTodo(id);
     }
 
-    @RequestMapping(value = "/todos", method = RequestMethod.GET)
+    @RequestMapping(value = "/getAll/todos", method = RequestMethod.GET)
     public List<String> getAllTodos(){
         return todoService.getAllTodos();
     }
@@ -32,7 +32,7 @@ public class TodoController {
         todoService.deleteTodo(id);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public void updateTodo(@PathVariable int id, @RequestBody String description){
         todoService.updateTodo(id, description);
     }
