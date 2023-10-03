@@ -14,13 +14,14 @@ public class URLService {
 
     public String generateShortenUrl(String longUrl) {
         if(longUrl == null) throw new NullPointerException("No long url specified");
-        String checkAndGetShortUrl = fileParserService.getLongToShortUrlMapping().get(longUrl);
-        if(checkAndGetShortUrl != null){
-            return checkAndGetShortUrl;
+
+        String cachedShortUrl = fileParserService.getCachedShortUrl(longUrl);
+        if(cachedShortUrl != null){
+            return cachedShortUrl;
         }
 
         String shortUrl = algoService.applyAlgo(longUrl);
-        fileParserService.storeShortLongUrlMapping(longUrl, shortUrl);
+        fileParserService.saveURLMapping(longUrl, shortUrl);
         return shortUrl;
     }
 
@@ -28,8 +29,10 @@ public class URLService {
         return fileParserService.getOriginalUrl(shortUrl);
     }
 
-    public boolean updateShortUrlToNewDestinationUrl(String shortUrl, String longUrl) {
-        if(shortUrl == null || longUrl == null) throw new IllegalArgumentException("Please pass valid urls");
-        return fileParserService.updateShortToLongUrlMapping(shortUrl, longUrl);
+    public boolean updateDestinationUrl(String shortUrl, String longUrl) {
+        if(shortUrl == null ) throw new IllegalArgumentException("Please pass valid short url!!");
+        if(longUrl == null ) throw new IllegalArgumentException("Please pass valid long url!!");
+
+        return fileParserService.updateDestinationUrl(shortUrl, longUrl);
     }
 }

@@ -1,8 +1,11 @@
 package com.tushar.swiggy.todo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import java.time.Duration;
 import java.util.List;
 
 @RestController
@@ -23,8 +26,13 @@ public class TodoController {
     }
 
     @RequestMapping(value = "/getAll/todos", method = RequestMethod.GET)
-    public List<String> getAllTodos(){
-        return todoService.getAllTodos();
+    public List<Products> getAllTodos(){
+        String productsUrl = "http://localhost:8081/products/getAll";
+        RestTemplate restTemplate = new RestTemplateBuilder().setConnectTimeout(Duration.ofSeconds(2)).
+                                    setReadTimeout(Duration.ofSeconds(4)).build();
+        List<Products> products = restTemplate.getForObject(productsUrl, List.class);
+        return products;
+//        return todoService.getAllTodos();
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
