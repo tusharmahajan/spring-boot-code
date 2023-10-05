@@ -6,6 +6,16 @@ public class URLEntity {
 
     private String shortUrl;
     private String longUrl;
+    @JsonProperty("extendExpiryByDays")
+    private Integer daysToExpire;
+
+    public Integer getDaysToExpire() {
+        return daysToExpire;
+    }
+
+    public void setDaysToExpire(Integer daysToExpire) {
+        this.daysToExpire = daysToExpire;
+    }
 
     public String getShortUrl() {
         return shortUrl;

@@ -6,4 +6,5 @@ public interface FileParserService {
     String getOriginalUrl(String shortUrl);
     String getCachedShortUrl(String longUrl);
     boolean updateDestinationUrl(String shortUrl, String longUrl);
+    boolean updateShortUrlExpiry(String shortUrl, Integer daysToExpire);
 }

@@ -35,4 +35,10 @@ public class URLService {
 
         return fileParserService.updateDestinationUrl(shortUrl, longUrl);
     }
+
+    public boolean updateExpiry(String shortUrl, Integer daysToExpire) {
+        if(shortUrl == null ) throw new IllegalArgumentException("Please pass valid short url!!");
+
+        return fileParserService.updateShortUrlExpiry(shortUrl, daysToExpire);
+    }
 }
