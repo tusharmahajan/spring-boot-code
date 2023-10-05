@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
@@ -59,19 +60,16 @@ public class URLController {
     }
 
     @GetMapping("/redirect/{shortenString}")
-    public ResponseEntity<Void> redirectToFullUrl(HttpServletResponse response, @PathVariable String shortenString) {
+    public RedirectView redirectToFullUrl( @PathVariable String shortenString) {
         try {
-            // get the full url from csv and use the below lines for redirection
 
             String originalUrl = urlService.getOriginalUrl(shortenString);
-            response.sendRedirect(originalUrl);
-            return ResponseEntity.status(HttpStatus.FOUND).build();
+            RedirectView redirectView = new RedirectView(originalUrl);
+            redirectView.setStatusCode(HttpStatus.FOUND);
+
+            return redirectView;
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Url not found", e);
-        } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not redirect to the full url", e);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
