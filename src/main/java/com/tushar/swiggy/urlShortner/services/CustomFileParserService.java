@@ -49,7 +49,7 @@ public class CustomFileParserService implements FileParserService{
 
     public void saveURLMapping(String longUrl, String shortUrl) {
 
-        LocalDateTime defaultExpiryTime = LocalDateTime.now().plusDays(30);
+        LocalDateTime defaultExpiryTime = LocalDateTime.now().plusMinutes(1);
         try{
             try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true))) {
                 bufferedWriter.write(shortUrl + ',' + longUrl + ',' + defaultExpiryTime);
@@ -80,8 +80,15 @@ public class CustomFileParserService implements FileParserService{
         shortUrlExpiry.put(urlMapping[0], LocalDateTime.parse(urlMapping[2]));
     }
 
-    public boolean updateDestinationUrl(String shortUrl, String longUrl) {
-        this.shortToLongUrlMapping.put(shortUrl, longUrl);
+    public boolean updateDestinationUrl(String shortUrl, String newLongUrl) {
+        String oldLongUrl = this.shortToLongUrlMapping.get(shortUrl);
+
+        if(oldLongUrl != null){
+            this.longToShortUrlMapping.remove(oldLongUrl);
+        }
+
+        this.shortToLongUrlMapping.put(shortUrl, newLongUrl);
+        this.longToShortUrlMapping.put(newLongUrl, shortUrl);
         return writeToFile();
     }
 
@@ -92,7 +99,31 @@ public class CustomFileParserService implements FileParserService{
         return writeToFile();
     }
 
-    private boolean writeToFile() {
+    @Override
+    public void removeExpiredLinks() {
+
+        if(shortUrlExpiry.isEmpty()) return;
+
+        List<String> shortUrlToRemove = new ArrayList<>();
+
+        LocalDateTime currentTime = LocalDateTime.now();
+        for(Map.Entry<String, LocalDateTime> expiryDate : shortUrlExpiry.entrySet()){
+            String shortUrl = expiryDate.getKey();
+            if(expiryDate.getValue().compareTo(currentTime) <= 0){
+                shortUrlToRemove.add(shortUrl);
+            }
+        }
+
+        for(String shortUrl: shortUrlToRemove){
+            shortUrlExpiry.remove(shortUrl);
+            longToShortUrlMapping.remove(shortToLongUrlMapping.get(shortUrl));
+            shortToLongUrlMapping.remove(shortUrl);
+        }
+
+        writeToFile();
+    }
+
+    private synchronized boolean writeToFile() {
 
         List<String> updatedLines = new ArrayList<>();
         for(Map.Entry<String, String> map : this.shortToLongUrlMapping.entrySet()){

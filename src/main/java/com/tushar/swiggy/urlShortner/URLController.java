@@ -2,7 +2,6 @@ package com.tushar.swiggy.urlShortner;
 
 import com.tushar.swiggy.urlShortner.models.URLEntity;
 import com.tushar.swiggy.urlShortner.services.URLService;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.io.IOException;
 import java.util.NoSuchElementException;
 
 @RestController

@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
+import java.util.UUID;
 
 @Component
 @Primary

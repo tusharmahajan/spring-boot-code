@@ -7,4 +7,5 @@ public interface FileParserService {
     String getCachedShortUrl(String longUrl);
     boolean updateDestinationUrl(String shortUrl, String longUrl);
     boolean updateShortUrlExpiry(String shortUrl, Integer daysToExpire);
+    void removeExpiredLinks();
 }
