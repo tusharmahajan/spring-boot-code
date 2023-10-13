@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -69,6 +70,12 @@ public class URLController {
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Url not found", e);
         }
+    }
+
+    @PostMapping("/validate/shortenUrl")
+    public ResponseEntity<String> validateShortenUrl(@RequestBody Map<String, Object> data, @RequestAttribute boolean valid){
+
+        return ResponseEntity.ok().body("Success");
     }
 
 }
