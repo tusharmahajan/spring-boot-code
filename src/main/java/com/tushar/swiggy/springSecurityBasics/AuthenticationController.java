@@ -29,7 +29,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(jwtToken);
     }
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ResponseEntity<String> login(@RequestBody Map<String, String> credentials) throws NoSuchAlgorithmException {
         String username = credentials.get("username");
         Users users = userJPARepository.getUserByUserName(username);
