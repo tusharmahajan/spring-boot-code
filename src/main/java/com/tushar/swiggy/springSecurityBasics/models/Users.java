@@ -23,8 +23,12 @@ public class Users {
     @Column(name = "password")
     public String password;
 
-    public Users(String username, String password) {
+    @Column(name = "salt")
+    public String salt;
+
+    public Users(String username, String password, String salt) {
         this.username = username;
         this.password = password;
+        this.salt = salt;
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.util.Base64;
 
 @Component
-public class AuthenticationInterceptor implements HandlerInterceptor {
+public class SignUpInterceptor implements HandlerInterceptor {
 
     @Value("${spring.username}")
     private String appUserName;
@@ -19,9 +19,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String authToken = request.getHeader("authorization").split(" ")[1];
+        String encodedCredentials = request.getHeader("authorization").split(" ")[1];
 
-        byte[] decodedBytes = Base64.getDecoder().decode(authToken);
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedCredentials);
         String decodedString = new String(decodedBytes);
 
         String username = decodedString.split(":")[0];

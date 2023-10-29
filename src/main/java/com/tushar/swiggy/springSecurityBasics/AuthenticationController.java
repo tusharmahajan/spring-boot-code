@@ -1,8 +1,10 @@
 package com.tushar.swiggy.springSecurityBasics;
 
 import com.tushar.swiggy.springSecurityBasics.models.Users;
-import com.tushar.swiggy.springSecurityBasics.repository.UserCrudRepository;
+import com.tushar.swiggy.springSecurityBasics.repository.UserJPARepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -13,16 +15,33 @@ import java.util.Map;
 public class AuthenticationController {
 
     @Autowired
-    UserCrudRepository userCrudRepository;
+    UserJPARepository userJPARepository;
 
     @PostMapping("/signup")
-    public String signup(@RequestBody Map<String, String> credentials) throws NoSuchAlgorithmException {
+    public ResponseEntity<String> signup(@RequestBody Map<String, String> credentials) throws NoSuchAlgorithmException {
         String username = credentials.get("username");
         String jwtToken = JWTUtility.generateToken(username);
-        String password = HashingUtility.generateHashPassword(credentials.get("password"));
-        Users users = new Users(username, password);
+        String generatedSalt = HashingUtility.generateSalt();
+        String password = HashingUtility.generateHashPassword(credentials.get("password"), generatedSalt);
+        Users users = new Users(username, password, generatedSalt);
 
-        userCrudRepository.save(users);
-        return jwtToken;
+        userJPARepository.save(users);
+        return ResponseEntity.ok(jwtToken);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Map<String, String> credentials) throws NoSuchAlgorithmException {
+        String username = credentials.get("username");
+        Users users = userJPARepository.getUserByUserName(username);
+        String storedPassword = users.getPassword();
+        String storedSalt = users.getSalt();
+
+        String generatedHashedPassword = HashingUtility.generateHashPassword(credentials.get("password"), storedSalt);
+
+        if(!generatedHashedPassword.equals(storedPassword)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Incorrect password");
+        }
+        String jwtToken = JWTUtility.generateToken(username);
+        return ResponseEntity.ok(jwtToken);
     }
 }
