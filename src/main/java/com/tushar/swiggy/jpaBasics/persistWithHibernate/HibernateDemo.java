@@ -1,17 +1,16 @@
 package com.tushar.swiggy.jpaBasics.persistWithHibernate;
 
 
-import com.tushar.swiggy.jpaBasics.Restaurant;
+import com.tushar.swiggy.jpaBasics.models.Restaurant;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 
-@Component
+//@Component
 public class HibernateDemo implements ApplicationRunner {
 
     @Autowired
@@ -31,7 +30,7 @@ public class HibernateDemo implements ApplicationRunner {
 
         Restaurant restaurant = new Restaurant();
         restaurant.setName("Pizza factory");
-        restaurant.setCuisine("Italian");
+//        restaurant.setCuisine("Italian");
 
         session.persist(restaurant);
         session.getTransaction().commit();

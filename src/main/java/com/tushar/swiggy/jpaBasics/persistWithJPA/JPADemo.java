@@ -1,18 +1,20 @@
 package com.tushar.swiggy.jpaBasics.persistWithJPA;
 
-import com.tushar.swiggy.jpaBasics.Restaurant;
+import com.tushar.swiggy.jpaBasics.models.Restaurant;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
+public class JPADemo implements ApplicationRunner {
 
-public class JPADemo {
-
-    public static void main(String[] args) {
-        persistWithJPA();
-    }
+//    public static void main(String[] args) {
+//    }
     public static void persistWithJPA(){
 
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("persistence");
@@ -30,7 +32,7 @@ public class JPADemo {
         entityManager.persist(restaurant); // managed state
         entityManager.detach(restaurant);
 
-        restaurant.setCuisine("Italian");
+//        restaurant.setCuisine("Italian");
 
         entityManager.getTransaction().commit();
         System.out.println("Restaurant ID: " + restaurant.getId());
@@ -49,5 +51,11 @@ public class JPADemo {
 
         entityManager.close();
         entityManagerFactory.close();
+    }
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+//        persistWithJPA();
+
     }
 }

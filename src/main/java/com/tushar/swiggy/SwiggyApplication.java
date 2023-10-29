@@ -18,6 +18,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.tushar.swiggy.jpaBasics.persistWithJPA.JPADemo.persistWithJPA;
+
 @SpringBootApplication
 @EnableScheduling
 public class SwiggyApplication implements ApplicationRunner {
@@ -48,7 +50,6 @@ public class SwiggyApplication implements ApplicationRunner {
 //		System.out.println("Message 2");
 //		notification.sendMessage("hi there");
 //		System.out.println(companyName);
-
 	}
 
 }
