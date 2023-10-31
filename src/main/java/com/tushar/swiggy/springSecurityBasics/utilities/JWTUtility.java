@@ -1,7 +1,10 @@
 package com.tushar.swiggy.springSecurityBasics.utilities;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.DefaultClaims;
 
 import java.util.Date;
 
@@ -16,6 +19,13 @@ public class JWTUtility {
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS256, SECRET)
                 .compact();
+    }
+
+    public static Claims extractBody(String token) {
+            return Jwts.parser()
+                    .setSigningKey(SECRET)
+                    .parseClaimsJws(token)
+                    .getBody();
     }
 
 }

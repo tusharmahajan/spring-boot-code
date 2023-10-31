@@ -4,12 +4,16 @@ import com.tushar.swiggy.springSecurityBasics.models.Users;
 import com.tushar.swiggy.springSecurityBasics.repository.UserJPARepository;
 import com.tushar.swiggy.springSecurityBasics.utilities.HashingUtility;
 import com.tushar.swiggy.springSecurityBasics.utilities.JWTUtility;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -45,5 +49,27 @@ public class AuthenticationController {
         }
         String jwtToken = JWTUtility.generateToken(username);
         return ResponseEntity.ok(jwtToken);
+    }
+
+    @GetMapping("/dummy")
+    public ResponseEntity<String> dummyMethod(@RequestBody Map<String, String> tokenMap) {
+
+        String token = tokenMap.get("jwt_token");
+        Claims decodedData = JWTUtility.extractBody(token);
+        Date expiryTime = decodedData.getExpiration();
+        String userName = decodedData.getSubject();
+
+        boolean isExpired = expiryTime.before(Date.from(Instant.now()));
+
+        if(isExpired){
+            return ResponseEntity.status(403).body("Token is expired");
+        }
+
+        Users users = userJPARepository.getUserByUserName(userName);
+
+        if(users == null){
+            return ResponseEntity.status(403).body("User not present");
+        }
+        return ResponseEntity.ok("Token is valid");
     }
 }
