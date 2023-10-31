@@ -1,4 +1,4 @@
-package com.tushar.swiggy.springSecurityBasics;
+package com.tushar.swiggy.springSecurityBasics.utilities;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

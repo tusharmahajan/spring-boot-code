@@ -2,6 +2,8 @@ package com.tushar.swiggy.springSecurityBasics;
 
 import com.tushar.swiggy.springSecurityBasics.models.Users;
 import com.tushar.swiggy.springSecurityBasics.repository.UserJPARepository;
+import com.tushar.swiggy.springSecurityBasics.utilities.HashingUtility;
+import com.tushar.swiggy.springSecurityBasics.utilities.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

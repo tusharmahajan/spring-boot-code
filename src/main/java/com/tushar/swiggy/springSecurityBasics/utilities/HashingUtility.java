@@ -1,4 +1,4 @@
-package com.tushar.swiggy.springSecurityBasics;
+package com.tushar.swiggy.springSecurityBasics.utilities;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
