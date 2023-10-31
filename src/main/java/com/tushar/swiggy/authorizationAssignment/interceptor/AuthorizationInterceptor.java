@@ -65,6 +65,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         UserInfo userInfo = userInfoRepository.getUserByUsername(username);
 
         if(userInfo != null){
+            // currently picking any one role of users and getting the permssions out of that.
             UserRolesMapping userRolesMapping = userRoleRepository.getUserRolesByUserId(userInfo.getId()).stream().findAny().get();
             Roles roles = userRolesMapping.getRoles();
             int roleId = roles.getId();
